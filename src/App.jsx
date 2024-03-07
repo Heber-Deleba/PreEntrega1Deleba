@@ -7,7 +7,7 @@ function App() {
   return (
     <>
     <Navbar callback={() => console.log ('hice click en la barra de navegacion')}/>
-    <ItemListContainer greeting='TODAS LAS CAMISETAS DE LA HISTORIA DEL FUTBOL ESTAN ACA' background='black' color='white'/>
+    <ItemListContainer greeting={'TODAS LAS CAMISETAS DE LA HISTORIA DEL FUTBOL ESTAN ACA'} />
       
       
     </>
