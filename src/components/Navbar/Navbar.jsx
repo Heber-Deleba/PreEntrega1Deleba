@@ -1,16 +1,17 @@
 import CartWidget from "../CartWidget/CartWidget"
 import classes from "./Navbar.module.css"
+import { Link } from 'react-router-dom'
 
-
-const Navbar = (props) => {
+const Navbar = () => {
     return (
         <>
         <header className={classes.header}>
             <h4>SAO<span>K</span>O</h4>
             <nav>
-                <a onClick={props.callback}>Destacados</a>
-                <a onClick={props.callback}>Novedades</a>
-                <a onClick={props.callback}>Registrarse</a>
+                <Link to='/category/ligaespanola'>Liga Espanola</Link>
+                <Link to='/category/ligaitaliana'>Liga Italiana</Link>
+                <Link to='/category/ligafrancesa'>Liga Francesa</Link>
+                
             </nav>
             <CartWidget className='btn btn-danger'/>
         </header>
