@@ -4,6 +4,9 @@ import { useState } from "react"
 const ItemCount = ({ initial = 1, stock, onAdd}) => {
     const [count, setCount] = useState(initial)
 
+
+
+
     const decrement = () => {
         if (count > 1){
             setCount(prev => prev -1)

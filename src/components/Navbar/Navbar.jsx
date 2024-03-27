@@ -6,7 +6,9 @@ const Navbar = () => {
     return (
         <>
         <header className={classes.header}>
+            <Link to='/'>
             <h4>SAO<span>K</span>O</h4>
+            </Link>
             <nav>
                 <Link to='/category/ligaespanola'>Liga Espanola</Link>
                 <Link to='/category/ligaitaliana'>Liga Italiana</Link>

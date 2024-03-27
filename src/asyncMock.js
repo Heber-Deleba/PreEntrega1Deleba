@@ -7,6 +7,7 @@ const products = [
         "category": "ligaitaliana",
         "img": "https://camisgo.com/wp-content/uploads/2023/05/milan-06-07-300x400.jpg",
         "stock": 3
+        
     },
     {
         "id": "2",
