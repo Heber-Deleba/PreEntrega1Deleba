@@ -24,18 +24,11 @@ const ItemDetailContainer = () =>{
             })
             .catch()
 
-
-
-        //getProductsById(itemId)
-            //.then(result =>{
-           //setProduct(result)
-
-           // })
     }, [itemId])
 
     return (
         <main>
-            <h1>Detalle del producto</h1>
+            <h1 style={{color:"white"}}>Detalle del producto</h1>
             <ItemDetail {...product}/>
         </main>
     )

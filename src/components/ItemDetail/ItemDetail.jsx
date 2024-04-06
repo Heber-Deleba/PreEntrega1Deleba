@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useState, useContext } from "react"
 import { CartContext } from "../../context/CartContext"
+import classes from "./ItemDetail.module.css"
 
 const InputCount = ({onAdd, stock, initial= 1}) =>{
     const [count, setCount] = useState (initial)
@@ -42,7 +43,7 @@ const ButtonCount = ({onAdd, stock, initial = 1 }) => {
     )
 }
 
-const ItemDetail = ({id, nombre, img, precio, stock}) => {
+const ItemDetail = ({id, nombre, img, precio, stock,descripcion}) => {
     const value = useContext(CartContext)
     console.log(value)
     const [inputType, setInputTipe] = useState('button')
@@ -68,23 +69,25 @@ const ItemDetail = ({id, nombre, img, precio, stock}) => {
     }
 
     return (
-        <article>
-        <div>
-            <button onClick={() => setInputTipe(inputType === 'input' ? 'button': 'input')}>cambiar contador</button>
-            <img src={img} style= {{width: 100}}/>
-            <h2>{nombre}</h2>
-            <h3>precio: ${precio}</h3>
+        <article style={{display:"flex", justifyContent:"center"}}>
+        <div className={classes.div} >
             
-        </div>
+            <img src={img} style= {{width:200, height:300, margin:10}}/>
+            <h2 style={{fontSize:15, color:"white", fontWeight:500,padding:10}}>{nombre}</h2>
+            <h3 style={{fontSize:15, color:"white", fontWeight:500,padding:10}}>PRECIO: ${precio}</h3>
+            <h4 style={{fontSize:15, color:"white", fontWeight:500,padding:5}}> DESCRIPCION: {descripcion}</h4>
+        
         <footer>
+            
             {
                 quantity === 0 ? (
-                    <ItemCount onAdd={handleOnAdd} stock={stock}/>
+                    <ItemCount onAdd={handleOnAdd} stock={stock}></ItemCount>
                 ) : (
-                    <Link to='/cart'>Terminar Compra</Link>
+                    <Link to='/cart' style={{color:"red", textDecoration:"none"}}>Terminar Compra</Link>
                 )
             }
         </footer>
+        </div>
         </article>
         
     )

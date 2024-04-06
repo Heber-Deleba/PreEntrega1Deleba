@@ -4,7 +4,7 @@ import classes from "./ItemList.module.css"
 const ItemList = ({products}) => {
     return (
     <section className={classes.section}>
-        <div className={classes.div} >
+        <div style={{display:"flex", flexWrap:"wrap" ,justifyContent:"space-around", alignItems:"center", backgroundColor:"lightgrey"}} >
             {
                 products.map((product) => {
                     return <Item key={product.id} {...product}/>

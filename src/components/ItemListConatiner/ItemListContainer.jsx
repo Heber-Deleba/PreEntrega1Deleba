@@ -40,15 +40,7 @@ const ItemListContainer = ({greeting}) =>{
             showNotification ('error', 'hubo un error al cargar los productos')
         })
 
-        //const asyncFunction = categoryId ? getProductsByCategory : getProducts
         
-            //asyncFunction(categoryId)
-            //.then( result => {
-                //setProducts(result)
-            //})
-            //.catch(error =>{
-                //console.log(error)
-            //})
         
         
     }, [categoryId])
@@ -58,7 +50,7 @@ const ItemListContainer = ({greeting}) =>{
     return(
         
         <div className={classes.div} >
-            <h1 style={{color:"white"}}>{greeting}</h1>
+            <h1 style={{color:"white", marginBottom:"0px"}}>{greeting}</h1>
             <ItemList products ={products} />
         </div>
         

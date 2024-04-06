@@ -38,7 +38,7 @@ const products = [
     },
     {
         "id": "5",
-        "nombre": "CAMISETA BETIS TITULAR '98",
+        "nombre": "",
         "precio": 100,
         "boton": "comprar",
         "category": "ligaespanola",
@@ -78,6 +78,7 @@ const products = [
         "precio": 180,
         "boton": "comprar",
         "category": "ligaitaliana",
+        "descripcion": "juventus",
         "img": "https://camisgo.com/wp-content/uploads/2023/05/juve-palace-19-20-300x400.png",
         "stock": 1
     },

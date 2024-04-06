@@ -1,13 +1,16 @@
-import { useState, useContext } from "react"
-import { CartContext } from "../../context/CartContext"
-import { writeBatch, getDocs, collection, query, where, addDoc, documentId } from "firebase/firestore"
-import { db } from "../../services/firebase/firebaseConfig"
+
+import React, { useState, useContext } from "react";
+import { CartContext } from "../../context/CartContext";
+import { writeBatch, getDocs, collection, query, where, addDoc, documentId } from "firebase/firestore";
+import { db } from "../../services/firebase/firebaseConfig";
 
 const Checkout = () => {
-    const [loading, setLoading] = useState(false)
-    const [orderId, setOrderId] = useState(null)
-    const {cart, total, clearCart} = useContext(CartContext)
-    const [formData, setFormData] = useState({ nombre: '', telefono: '', email: '' });
+    const [loading, setLoading] = useState(false);
+    const [orderId, setOrderId] = useState(null);
+    const { cart, total, clearCart } = useContext(CartContext);
+    const [formData, setFormData] = useState({ nombre: '', telefono: '', email: '', emailValidation: '' });
+    
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,6 +21,32 @@ const Checkout = () => {
         e.preventDefault();
         try {
             setLoading(true);
+
+            if (!formData.nombre || !formData.email || !formData.telefono) {
+                console.error('Faltan datos requeridos para generar la orden.');
+                return;
+            }
+
+            if (formData.email !== formData.emailValidation) {
+                console.error('El correo electrónico y su validación no coinciden.');
+                return;
+            }
+    
+            
+            if (cart.length === 0) {
+                console.error('El carrito está vacío');
+                return;
+            }
+
+            const orderCollection = collection(db, 'orders');
+
+            if (typeof total === 'undefined') {
+                console.warn('El valor total no está definido. Asignando un valor predeterminado.');
+                
+                const defaultTotal = 0; 
+                setTotal(defaultTotal);
+            }
+
             const objOrder = {
                 buyer: {
                     nombre: formData.nombre,
@@ -27,6 +56,18 @@ const Checkout = () => {
                 items: cart,
                 total
             };
+
+            
+            const { id } = await addDoc(orderCollection, objOrder);
+
+                clearCart();
+                setOrderId(id);
+    
+            if (cart.length === 0) {
+                console.error('El carrito está vacío');
+                return;
+            }
+    
             const batch = writeBatch(db);
             const outOfStock = [];
             const ids = cart.map(prod => prod.id);
@@ -38,20 +79,20 @@ const Checkout = () => {
                 const stockDb = data.stock;
                 const productAddedToCart = cart.find(prod => prod.id === doc.id);
                 const prodQuantity = productAddedToCart.quantity;
-                if(stockDb > prodQuantity){
-                    batch.update(doc.ref, {stock: stockDb - prodQuantity});
+                if (stockDb > prodQuantity) {
+                    batch.update(doc.ref, { stock: stockDb - prodQuantity });
                 } else {
-                    outOfStock.push({id: doc.id, ...data});
+                    outOfStock.push({ id: doc.id, ...data });
                 }
             });
-            if(outOfStock.length === 0){
+            if (outOfStock.length === 0) {
                 batch.commit();
                 const orderCollection = collection(db, 'orders');
-                const{id} = await addDoc(orderCollection, objOrder);
+                const { id } = await addDoc(orderCollection, objOrder);
                 clearCart();
                 setOrderId(id);
             } else {
-                console.error('hay productos que no tienen stock disponible');
+                console.error('Hay productos que no tienen stock disponible');
             }
         } catch (error) {
             console.error('Error en la generación de la orden:', error);
@@ -59,18 +100,19 @@ const Checkout = () => {
             setLoading(false);
         }
     };
+    
 
     if (loading) {
-        return <h1>Su orden está siendo generada</h1>
+        return <h1 style={{color:"white"}}>Su orden está siendo generada</h1>
     }
 
     if (orderId) {
-        return <h1>El id de su orden es: {orderId}</h1>
+        return <h1 style={{color:"white"}}>El codigo de su orden es: {orderId}</h1>
     }
 
     return (
         <div>
-            <h1>Checkout</h1>
+            <h1 style={{color:"white"}}>Checkout</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Nombre:</label>
@@ -84,6 +126,10 @@ const Checkout = () => {
                     <label>Email:</label>
                     <input type="email" name="email" value={formData.email} onChange={handleChange} required />
                 </div>
+                <div>
+                    <label>Validación de Email:</label>
+                    <input type="email" name="emailValidation" value={formData.emailValidation} onChange={handleChange} required />
+                </div>
                 <button type="submit">Generar orden de compra</button>
             </form>
         </div>
@@ -91,8 +137,6 @@ const Checkout = () => {
 }
 
 export default Checkout;
-
-
 
 
 
